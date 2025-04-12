@@ -55,7 +55,7 @@ export class GoogleAuthView {
             res.cookie(
                 'auth', 
                 JSON.stringify({ email: user.email, name: user.name, googleId: user.googleId }),
-                { httpOnly: true, secure: false, maxAge: 3600000 } // cookie lasts 1 hour
+                { httpOnly: true, secure: false, maxAge: 3600000, sameSite: 'none' } // cookie lasts 1 hour
             );
             
             return res.status(200).json({ success: true, user: { email: user.email, name: user.name, googleId } });
