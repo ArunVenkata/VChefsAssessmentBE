@@ -1,0 +1,12 @@
+{
+  "name": "api_lib",
+  "version": "1.0.0",
+  "description": "custom module for making apis",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arun V",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js"
+}
