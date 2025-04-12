@@ -33,7 +33,7 @@ Otherwise, return a JSON with the following format:
                 },
             ],
         });
-        console.log("AI MESSAGE",completion.choices[0].message)
+        
         const recipe = JSON.parse(completion.choices[0].message.content)
         if (recipe && !recipe.name){
             return {success: false, data: {}, message: recipe.message}
