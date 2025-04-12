@@ -34,7 +34,7 @@ export class RecipeView {
             return res.Response({ success: true, recipes });
         } catch (err) {
             console.error("Error searching recipes", err);
-            return res.Response({ success: false, error: "Error searching recipes" }, 500);
+            return res.Response({ success: false, message: "Error searching recipes" }, 500);
         }
     }
 
@@ -42,15 +42,15 @@ export class RecipeView {
         const { name, ingredients, servings } = req.body;
         
         if (!name) {
-            return res.Response({ success: false, error: "Recipe name is required." }, 400);
+            return res.Response({ success: false, message: "Recipe name is required." }, 400);
         }
         if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
-            return res.Response({ success: false, error: "A non-empty ingredients list is required." }, 400);
+            return res.Response({ success: false, message: "A non-empty ingredients list is required." }, 400);
         }
 
         for (const ingredient of ingredients) {
             if (!ingredient.name) {
-                return res.Response({ success: false, error: "Each ingredient must have a name." }, 400);
+                return res.Response({ success: false, message: "Each ingredient must have a name." }, 400);
             }
         }
         
@@ -59,7 +59,7 @@ export class RecipeView {
         try {
             const existingRecipe = await Recipe.findOne({ name: { $regex: `^${name}$`, $options: "i" } });
             if (existingRecipe) {
-                return res.Response({ success: false, error: "Recipe already exists." }, 409);
+                return res.Response({ success: false, message: "Recipe already exists." }, 409);
             }
             const createdBy = req.auth_user ? req.auth_user._id : null;
 
@@ -74,7 +74,7 @@ export class RecipeView {
             return res.Response({ success: true, recipe: newRecipe });
         } catch (err) {
             console.error("Error saving new recipe:", err);
-            return res.Response({ success: false, error: "Error saving new recipe" }, 500);
+            return res.Response({ success: false, message: "Error saving new recipe" }, 500);
         }
     }
 }
@@ -88,11 +88,11 @@ export class AIRecipeView{
     async POST(req, res){
         const { recipeName } = req.body;
         if (!recipeName || typeof recipeName !== 'string' || recipeName.trim() === "") {
-            return res.Response({ success: false, error: "A valid recipe name is required." }, 400);
+            return res.Response({ success: false, message: "A valid recipe name is required." }, 400);
         }
         const existingRecipe = await Recipe.findOne({ name: { $regex: `^${recipeName}$`, $options: "i" } });
         if (existingRecipe) {
-            return res.Response({ success: false, error: "Recipe already exists." }, 409);
+            return res.Response({ success: false, message: "Recipe already exists." }, 409);
         }
         const aiResponse = await validateRecipeNameAndGenerate(recipeName)
         if (!aiResponse.success){
